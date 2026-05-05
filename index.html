@@ -6,13 +6,17 @@
 <title>React კურსის სალექციო მასალები</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
 :root {
+  --font-display: 'DM Sans', 'Inter', system-ui, sans-serif;
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  --border-radius-md: 8px;
-  --border-radius-lg: 12px;
+  --border-radius-md: 10px;
+  --border-radius-lg: 16px;
+  --accent: #2563eb;
+  --accent-soft: rgba(37, 99, 235, 0.12);
+  --accent-glow: rgba(37, 99, 235, 0.25);
 
   --color-background-primary: #ffffff;
   --color-background-secondary: #f5f5f4;
@@ -38,6 +42,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --accent: #60a5fa;
+    --accent-soft: rgba(96, 165, 250, 0.15);
+    --accent-glow: rgba(96, 165, 250, 0.2);
     --color-background-primary: #1e1e1c;
     --color-background-secondary: #2a2a28;
     --color-background-tertiary: #232321;
@@ -68,75 +75,119 @@ body {
   font-size: 16px;
   line-height: 1.7;
   color: var(--color-text-primary);
-  background: var(--color-background-tertiary);
-  padding: 32px 16px;
+  background:
+    radial-gradient(ellipse 120% 80% at 100% -20%, var(--accent-soft), transparent 50%),
+    radial-gradient(ellipse 80% 50% at 0% 100%, rgba(99, 102, 241, 0.08), transparent 45%),
+    var(--color-background-tertiary);
+  background-attachment: fixed;
+  padding: 28px 16px 48px;
+  min-height: 100vh;
 }
 
 .wrapper {
-  max-width: 820px;
+  max-width: 860px;
   margin: 0 auto;
   background: var(--color-background-primary);
   border-radius: var(--border-radius-lg);
-  border: 0.5px solid var(--color-border-tertiary);
-  padding: 28px 32px;
+  border: 1px solid var(--color-border-tertiary);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 12px 40px -12px var(--accent-glow),
+    0 24px 64px -24px rgba(0,0,0,0.08);
+  padding: 0;
+  overflow: hidden;
 }
 
+.hero {
+  padding: 32px 32px 28px;
+  background: linear-gradient(135deg, var(--accent-soft) 0%, transparent 55%);
+  border-bottom: 1px solid var(--color-border-tertiary);
+}
+.hero-inner { max-width: 100%; }
 .page-title {
-  font-size: 22px;
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3.5vw, 1.65rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--color-text-primary);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  line-height: 1.25;
 }
-
+.page-title span.accent {
+  color: var(--accent);
+}
 .page-sub {
   font-size: 14px;
   color: var(--color-text-secondary);
-  margin-bottom: 24px;
+  max-width: 52ch;
+}
+.main-inner {
+  padding: 24px 32px 32px;
 }
 
-.nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding-bottom: 4px;
+}
 .nav-btn {
-  padding: 8px 14px;
-  border: 0.5px solid var(--color-border-secondary);
-  border-radius: var(--border-radius-md);
-  background: transparent;
+  padding: 9px 15px;
+  border: 1px solid var(--color-border-tertiary);
+  border-radius: 999px;
+  background: var(--color-background-secondary);
   color: var(--color-text-secondary);
   font-size: 13px;
   font-family: var(--font-sans);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.nav-btn:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
-.nav-btn.active {
-  background: var(--color-background-info);
-  color: var(--color-text-info);
-  border-color: var(--color-border-info);
   font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
 }
+.nav-btn:hover {
+  background: var(--color-background-tertiary);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-secondary);
+}
+.nav-btn.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
+  font-weight: 600;
+}
+.nav-btn.resource-tab { font-weight: 600; }
 
 .lecture { display: none; }
 .lecture.active { display: block; }
 
 .section-title {
+  font-family: var(--font-display);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   margin-bottom: 12px;
-  margin-top: 24px;
+  margin-top: 28px;
 }
 .section-title:first-child { margin-top: 0; }
 
 .card {
   background: var(--color-background-secondary);
-  border: 0.5px solid var(--color-border-tertiary);
+  border: 1px solid var(--color-border-tertiary);
   border-radius: var(--border-radius-lg);
-  padding: 16px 20px;
+  padding: 18px 20px;
   margin-bottom: 12px;
 }
-.card h3 { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
-.card p { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+.card h3 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
+}
+.card p { font-size: 14px; color: var(--color-text-secondary); line-height: 1.65; }
 
 .goal-list { list-style: none; }
 .goal-list li {
@@ -150,9 +201,17 @@ body {
   content: '→';
   position: absolute;
   left: 0;
-  color: var(--color-text-info);
+  color: var(--accent);
   font-size: 12px;
   top: 3px;
+}
+.goal-list a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.goal-list a:hover {
+  border-bottom-color: var(--accent);
 }
 
 pre {
@@ -232,9 +291,16 @@ pre code { background: none; padding: 0; border-radius: 0; }
 .lec-header {
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 0.5px solid var(--color-border-tertiary);
+  border-bottom: 1px solid var(--color-border-tertiary);
 }
-.lec-header h2 { font-size: 20px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
+.lec-header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
 .lec-meta { display: flex; gap: 6px; flex-wrap: wrap; }
 
 .ask-btn {
@@ -253,6 +319,111 @@ pre code { background: none; padding: 0; border-radius: 0; }
   opacity: 0.6;
 }
 
+.tip-theory {
+  background: linear-gradient(135deg, var(--accent-soft), transparent 70%);
+  border: 1px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+}
+.tip-theory h4 {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tip-theory h4::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.tip-theory p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.resource-card {
+  display: block;
+  text-decoration: none;
+  padding: 16px 18px;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--color-border-tertiary);
+  background: var(--color-background-secondary);
+  color: inherit;
+  transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s;
+}
+.resource-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--color-border-tertiary));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -8px var(--accent-glow);
+}
+.resource-card .rc-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+.resource-card .rc-desc {
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.resource-card .rc-url {
+  font-size: 12px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  word-break: break-all;
+}
+
+.theory-stack .theory-item {
+  border-left: 3px solid var(--accent);
+  padding: 14px 16px 14px 18px;
+  margin-bottom: 12px;
+  background: var(--color-background-secondary);
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+}
+.theory-item h4 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+.theory-item p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+}
+
+a.resource-card:visited {
+  color: inherit;
+}
+
+.site-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border-tertiary);
+  font-size: 12.5px;
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+
 .sr-only {
   position: absolute; width: 1px; height: 1px;
   padding: 0; margin: -1px; overflow: hidden;
@@ -262,23 +433,125 @@ pre code { background: none; padding: 0; border-radius: 0; }
 </head>
 <body>
 <div class="wrapper">
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="page-title">React <span class="accent">კურსი</span> — სალექციო მასალები</p>
+      <p class="page-sub">მოდული 06.1.1.5 · ვებგვერდის ინტერაქტიულობისა და ეფექტების შემუშავება React-ის საშუალებით</p>
+    </div>
+  </header>
 
-<p class="page-title">React კურსის სალექციო მასალები</p>
-<p class="page-sub">მოდული 06.1.1.5 · ვებგვერდის ინტერაქტიულობისა და ეფექტების შემუშავება React-ის საშუალებით</p>
-
-<h2 class="sr-only">React კურსის სალექციო მასალები - 6 ლექცია</h2>
+  <div class="main-inner">
+<h2 class="sr-only">React კურსის სალექციო მასალები — რესურსები და ლექციები</h2>
 
 <div class="nav">
-  <button class="nav-btn active" onclick="showLecture(1)">ლექცია 1</button>
-  <button class="nav-btn" onclick="showLecture(2)">ლექცია 2</button>
-  <button class="nav-btn" onclick="showLecture(3)">ლექცია 3</button>
-  <button class="nav-btn" onclick="showLecture(4)">ლექცია 4</button>
-  <button class="nav-btn" onclick="showLecture(5)">ლექცია 5</button>
-  <button class="nav-btn" onclick="showLecture(6)">ლექცია 6</button>
+  <button type="button" class="nav-btn resource-tab active" onclick="showLecture(0)">რესურსები და თეორია</button>
+  <button type="button" class="nav-btn" onclick="showLecture(1)">ლექცია 1</button>
+  <button type="button" class="nav-btn" onclick="showLecture(2)">ლექცია 2</button>
+  <button type="button" class="nav-btn" onclick="showLecture(3)">ლექცია 3</button>
+  <button type="button" class="nav-btn" onclick="showLecture(4)">ლექცია 4</button>
+  <button type="button" class="nav-btn" onclick="showLecture(5)">ლექცია 5</button>
+  <button type="button" class="nav-btn" onclick="showLecture(6)">ლექცია 6</button>
+</div>
+
+<!-- RESOURCES & THEORY -->
+<div class="lecture active" id="lec-0">
+  <div class="lec-header">
+    <h2>რესურსები და ძირითადი თეორია</h2>
+    <div class="lec-meta">
+      <span class="badge badge-blue">სასწავლო ბმულები</span>
+      <span class="badge badge-green">კონცეფციები</span>
+    </div>
+  </div>
+
+  <div class="section-title">ოფიციალური და რეკომენდებული რესურსები</div>
+  <div class="resource-grid">
+    <a class="resource-card" href="https://react.dev" target="_blank" rel="noopener noreferrer">
+      <div class="rc-title">React — ახალი დოკუმენტაცია</div>
+      <div class="rc-desc">Hooks, კომპონენტები, არქიტექტურა — react.dev არის სწავლის ძირითადი წყარო.</div>
+      <div class="rc-url">react.dev</div>
+    </a>
+    <a class="resource-card" href="https://react.dev/learn" target="_blank" rel="noopener noreferrer">
+      <div class="rc-title">Learn React</div>
+      <div class="rc-desc">სწავლების გზანარეკვი თეორიითა და მაგალითებით.</div>
+      <div class="rc-url">react.dev/learn</div>
+    </a>
+    <a class="resource-card" href="https://vitejs.dev/guide/" target="_blank" rel="noopener noreferrer">
+      <div class="rc-title">Vite — გიდი</div>
+      <div class="rc-desc">პროექტის შექმნა, კონფიგურაცია, ბილდი და dev სერვერი.</div>
+      <div class="rc-url">vitejs.dev/guide</div>
+    </a>
+    <a class="resource-card" href="https://reactrouter.com/" target="_blank" rel="noopener noreferrer">
+      <div class="rc-title">React Router</div>
+      <div class="rc-desc">SPA მარშრუტიზაცია: Routes, Link, hooks.</div>
+      <div class="rc-url">reactrouter.com</div>
+    </a>
+    <a class="resource-card" href="https://redux-toolkit.js.org/" target="_blank" rel="noopener noreferrer">
+      <div class="rc-title">Redux Toolkit</div>
+      <div class="rc-desc">გლობალური მდგომარეობა: createSlice, store, async logic.</div>
+      <div class="rc-url">redux-toolkit.js.org</div>
+    </a>
+    <a class="resource-card" href="https://formik.org/docs/overview" target="_blank" rel="noopener noreferrer">
+      <div class="rc-title">Formik</div>
+      <div class="rc-desc">ფორმების მართვა React-ში.</div>
+      <div class="rc-url">formik.org</div>
+    </a>
+    <a class="resource-card" href="https://github.com/jquense/yup" target="_blank" rel="noopener noreferrer">
+      <div class="rc-title">Yup</div>
+      <div class="rc-desc">ვალიდაციის სქემები — ხშირად Formik-თან ერთად.</div>
+      <div class="rc-url">github.com/jquense/yup</div>
+    </a>
+    <a class="resource-card" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Frameworks_libraries/React_getting_started" target="_blank" rel="noopener noreferrer">
+      <div class="rc-title">MDN — React დასაწყისი</div>
+      <div class="rc-desc">ვებ ტექნოლოგიების ფართო კონტექსტი.</div>
+      <div class="rc-url">developer.mozilla.org</div>
+    </a>
+  </div>
+
+  <div class="section-title">ძირითადი თეორიული კონცეფციები</div>
+  <div class="theory-stack">
+    <div class="theory-item">
+      <h4>რა არის React?</h4>
+      <p>React — JavaScript-ის ბიბლიოთეკა მომხმარებლის ინტერფეისის ასაგებად: კოდით <strong>აღწერ</strong>, როგორი უნდა იყოს UI მოცემული props/state-ის მიხედვით. კომპონენტები მრავალჯერ გამოყენებადია; React ასინქრონებს რეალურ DOM-ს.</p>
+    </div>
+    <div class="theory-item">
+      <h4>Virtual DOM და რენდერი</h4>
+      <p>React ინახავს UI-ის ვირტუალურ წარმოდგენას. ცვლილებისას აითვლება „უაღრესად მსუყე“ განსახიერება და ბრაუზერის DOM-ს მხოლოდ საჭირო განახლებები ერთიანდება — ეს ამცირებს პირდაპირ მანიპულაციებს და ხელს უწყობს წინასწარმეტყველებადობას.</p>
+    </div>
+    <div class="theory-item">
+      <h4>ერთმიმართულიანი მონაცემთა ნაკადი</h4>
+      <p>მონაცემები ჩვეულებრივ ზემოდან ქვემოთ მიედინება (props). შვილისგან ასლის მიღება callback-ებით ან state lift-ით ხდება. ეს მოდელი ხსნის, <strong>ვინ</strong> წარმოადგენს სიმართლეს და ამარტივებს დებაგს.</p>
+    </div>
+    <div class="theory-item">
+      <h4>Hooks და ფუნქციური კომპონენტები</h4>
+      <p>Hooks (მაგ. <code>useState</code>, <code>useEffect</code>) საშუალებას იძლევა მდგომარეობა და გვერდითი ეფექტები ფუნქციაში იყოს ლოკალიზებული, კლასების გარეშე. წესი: Hooks მხოლოდ კომპონენტის ტოპ ლეველზე, პირობითი ხაზების გარეშე.</p>
+    </div>
+    <div class="theory-item">
+      <h4>SPA და რატომ სჭირდება Router</h4>
+      <p>ერთგვერდიან აპში ნავიგაცია URL-ს იყენებს გვერდის მდგომარეობის სინქრონიზაციისთვის. React Router აკავშირებს URL-ს კომპონენტებთან და ბრაუზერის ისტორიას.</p>
+    </div>
+    <div class="theory-item">
+      <h4>გლობალური state და Redux Toolkit</h4>
+      <p>ლოკალური state კომპონენტში რჩება; საერთო მონაცემები (მაგ. კალათა, იუზერი) ხშირად ცენტრალიზებულ store-ში მოდის. Redux Toolkit slice-ებსა და reducers-ს ამარტივებს; Immer საშუალებას იძლევა, კოდში ჩანდეს პირდაპირი მინიჭება, რეალურად კი უსაფრთხო განახლება მიმდინარეობდეს.</p>
+    </div>
+    <div class="theory-item">
+      <h4>კონტროლირებადი ფორმები და ვალიდაცია</h4>
+      <p>ფორმის მნიშვნელობა React state-ში ინახება — ე.წ. controlled components. Formik აერთიანებს მაჩენერებელს; Yup ადგენს წესებს შეცდომების ტექსტებით.</p>
+    </div>
+  </div>
+
+  <div class="section-title">დამატებითი ტექსტური რესურსები</div>
+  <div class="card">
+    <h3>ბლოგები და სტატიები</h3>
+    <ul class="goal-list">
+      <li><a href="https://kentcdodds.com/blog/application-state-management-with-react" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">Kent C. Dodds — state მენეჯმენტი</a></li>
+      <li><a href="https://patterns.dev/react/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">Patterns.dev — React პატერნები</a></li>
+      <li><a href="https://beta.reactjs.org/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">რედირექტი react.dev-ზე — ისტორიული ბილდი</a></li>
+    </ul>
+  </div>
 </div>
 
 <!-- LECTURE 1 -->
-<div class="lecture active" id="lec-1">
+<div class="lecture" id="lec-1">
   <div class="lec-header">
     <h2>ლექცია 1 — პროექტის შექმნა React-ით</h2>
     <div class="lec-meta">
@@ -294,9 +567,14 @@ pre code { background: none; padding: 0; border-radius: 0; }
     <ul class="goal-list">
       <li>დამხმარე პროგრამების ინსტალაცია (Node.js, VS Code)</li>
       <li>React-ის ინსტალაცია Vite-ის გამოყენებით</li>
-      <li>ჯმნის სამუშაო გარემოს კონფიგურაცია</li>
+      <li>განვითარების სამუშაო გარემოს კონფიგურაცია</li>
       <li>React პროექტის სტრუქტურის გაგება</li>
     </ul>
+  </div>
+
+  <div class="tip-theory">
+    <h4>თეორიული ფონი</h4>
+    <p>JSX სინტაქსურად HTML-ს ჰგავს, მაგრამ ქვეშ მუშაობს JavaScript: კომპილაციის შემდეგ მიიღება <code>React.createElement</code>-ის ჯაჭვი. ამიტომაა <code>className</code> და ფიგურული ფრჩხილები გამოთქმებისთვის — ეს JS გრამატიკაა, არა HTML ფაილი.</p>
   </div>
 
   <div class="section-title">ძირითადი ცნებები</div>
@@ -393,6 +671,11 @@ pre code { background: none; padding: 0; border-radius: 0; }
     </ul>
   </div>
 
+  <div class="tip-theory">
+    <h4>თეორიული ფონი</h4>
+    <p>Hooks მოჰყვება გამოძახების თანმიმდევრობას ყოველ რენდერზე. ამიტომ არ შეიძლება ისინი იყოს ციკლში ან პირობით ბლოკში — წყობა დაირღვევა. Side effect-ები <code>useEffect</code>-ში იჭერება, რათა რენდერი რჩებოდა „სუფთა“.</p>
+  </div>
+
   <div class="section-title">useState — მდგომარეობის მართვა</div>
   <pre><span class="code-kw">import</span> { useState } <span class="code-kw">from</span> <span class="code-str">'react'</span>;
 
@@ -474,6 +757,11 @@ pre code { background: none; padding: 0; border-radius: 0; }
       <li>კომპონენტების სტრუქტურის props-ის საშუალებით აგება</li>
       <li>props-ის მართვის ზედა დონის ტექნიკა</li>
     </ul>
+  </div>
+
+  <div class="tip-theory">
+    <h4>თეორიული ფონი</h4>
+    <p>Props არის შესვლის მონაცემი — ერთი მიმართულებით ზემოდან ქვემოთ. კომპონენტმა არ უნდა „შეცვალოს“ props-ის ობიექტი უტილოდ; ცვლილება იწყება მშობელში ახალი props-ით. <code>children</code> — special prop შიგთავსის გადასაცემად.</p>
   </div>
 
   <div class="section-title">Props — მონაცემთა გადაცემა</div>
@@ -566,6 +854,11 @@ Card.defaultProps = {
     </ul>
   </div>
 
+  <div class="tip-theory">
+    <h4>თეორიული ფონი</h4>
+    <p>SPA-ში სერვერი ერთ HTML-ს აბრუნებს; URL-ის ცვლილებას React Router აისახავს კომპონენტების ხეზე — ეს იძლევა ბრაუზერის „უკან/წინ“ და ღრმა ბმულების მხარდაჭერას სრული გვერდის გადატვირთვის გარეშე.</p>
+  </div>
+
   <div class="section-title">ინსტალაცია და დაყენება</div>
   <pre><span class="code-kw">npm</span> install react-router-dom</pre>
 
@@ -644,6 +937,11 @@ Card.defaultProps = {
       <li>Store-ის კომპონენტებთან დაკავშირება Provider-ით</li>
       <li>მონაცემების წამოღება კომპონენტებიდან useSelector/useDispatch-ით</li>
     </ul>
+  </div>
+
+  <div class="tip-theory">
+    <h4>თეორიული ფონი</h4>
+    <p>Redux მიჰყვება ერთმიმართულიან მონაცემთა ნაკადს: Action → Reducer → Store → View. ცენტრალიზებული store დიდ აპებში დებაგს ამარტივებს; Redux Toolkit ამცირებს boilerplate-ს და იყენებს Immer-ს draft state-ის უსაფრთხო ცვლილებებისთვის.</p>
   </div>
 
   <div class="section-title">ინსტალაცია</div>
@@ -727,6 +1025,11 @@ ReactDOM.createRoot(document.getElementById(<span class="code-str">'root'</span>
     </ul>
   </div>
 
+  <div class="tip-theory">
+    <h4>თეორიული ფონი</h4>
+    <p>კონტროლირებადი ელემენტებისას მნიშვნელობა React state-შია — ერთი წყარო სიმართლისა. Formik აერთიანებს შეხებას, შეცდომებსა და submit-ს; Yup სქემით შედარებადი წესები იჭრება დეკლარაციულად, ხშირად სინქრონულ ვალიდაციასთან.</p>
+  </div>
+
   <div class="section-title">ინსტალაცია</div>
   <pre><span class="code-kw">npm</span> install formik yup</pre>
 
@@ -791,14 +1094,18 @@ ReactDOM.createRoot(document.getElementById(<span class="code-str">'root'</span>
   <button class="ask-btn">Custom Validation</button>
 </div>
 
+<footer class="site-footer">სალექციო მასალა · React · მოდული 06.1.1.5</footer>
+</div><!-- /main-inner -->
 </div><!-- /wrapper -->
 
 <script>
 function showLecture(n) {
-  document.querySelectorAll('.lecture').forEach(l => l.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('lec-' + n).classList.add('active');
-  document.querySelectorAll('.nav-btn')[n - 1].classList.add('active');
+  document.querySelectorAll('.lecture').forEach(function (el) { el.classList.remove('active'); });
+  document.querySelectorAll('.nav-btn').forEach(function (b) { b.classList.remove('active'); });
+  var panel = document.getElementById('lec-' + n);
+  if (panel) panel.classList.add('active');
+  var btns = document.querySelectorAll('.nav-btn');
+  if (btns[n]) btns[n].classList.add('active');
 }
 </script>
 </body>

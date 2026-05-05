@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React კურსის სალექციო მასალები</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f4;
+  --color-background-tertiary: #f0efed;
+  --color-background-info: #e6f1fb;
+  --color-background-success: #eaf3de;
+  --color-background-warning: #faeeda;
+  --color-background-danger: #fcebeb;
+
+  --color-text-primary: #1a1a18;
+  --color-text-secondary: #5f5e5a;
+  --color-text-tertiary: #888780;
+  --color-text-info: #185fa5;
+  --color-text-success: #3b6d11;
+  --color-text-warning: #854f0b;
+  --color-text-danger: #a32d2d;
+
+  --color-border-tertiary: rgba(26,26,24,0.15);
+  --color-border-secondary: rgba(26,26,24,0.30);
+  --color-border-primary: rgba(26,26,24,0.40);
+  --color-border-info: #378add;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background-primary: #1e1e1c;
+    --color-background-secondary: #2a2a28;
+    --color-background-tertiary: #232321;
+    --color-background-info: #042c53;
+    --color-background-success: #173404;
+    --color-background-warning: #412402;
+    --color-background-danger: #501313;
+
+    --color-text-primary: #f0efed;
+    --color-text-secondary: #b4b2a9;
+    --color-text-tertiary: #888780;
+    --color-text-info: #85b7eb;
+    --color-text-success: #97c459;
+    --color-text-warning: #ef9f27;
+    --color-text-danger: #f09595;
+
+    --color-border-tertiary: rgba(240,239,237,0.15);
+    --color-border-secondary: rgba(240,239,237,0.30);
+    --color-border-primary: rgba(240,239,237,0.40);
+    --color-border-info: #378add;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-text-primary);
+  background: var(--color-background-tertiary);
+  padding: 32px 16px;
+}
+
+.wrapper {
+  max-width: 820px;
+  margin: 0 auto;
+  background: var(--color-background-primary);
+  border-radius: var(--border-radius-lg);
+  border: 0.5px solid var(--color-border-tertiary);
+  padding: 28px 32px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+
+.page-sub {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-bottom: 24px;
+}
+
+.nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.nav-btn {
+  padding: 8px 14px;
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.nav-btn:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+.nav-btn.active {
+  background: var(--color-background-info);
+  color: var(--color-text-info);
+  border-color: var(--color-border-info);
+  font-weight: 500;
+}
+
+.lecture { display: none; }
+.lecture.active { display: block; }
+
+.section-title {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 12px;
+  margin-top: 24px;
+}
+.section-title:first-child { margin-top: 0; }
+
+.card {
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+.card h3 { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
+.card p { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+
+.goal-list { list-style: none; }
+.goal-list li {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  padding-left: 20px;
+  position: relative;
+}
+.goal-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--color-text-info);
+  font-size: 12px;
+  top: 3px;
+}
+
+pre {
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  overflow-x: auto;
+  margin-bottom: 12px;
+  color: var(--color-text-primary);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  background: var(--color-background-secondary);
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: var(--color-text-primary);
+}
+pre code { background: none; padding: 0; border-radius: 0; }
+
+.code-comment { color: var(--color-text-tertiary); font-style: italic; }
+.code-kw { color: #7F77DD; }
+.code-str { color: #1D9E75; }
+.code-fn { color: #D85A30; }
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: var(--border-radius-md);
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+.badge-blue { background: var(--color-background-info); color: var(--color-text-info); }
+.badge-green { background: var(--color-background-success); color: var(--color-text-success); }
+.badge-warn { background: var(--color-background-warning); color: var(--color-text-warning); }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+.concept-box {
+  background: var(--color-background-secondary);
+  border-left: 2px solid var(--color-border-info);
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+}
+.concept-box .label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-info);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.concept-box .value { font-size: 13px; color: var(--color-text-primary); line-height: 1.5; }
+
+.step { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
+.step-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--color-background-info);
+  color: var(--color-text-info);
+  font-size: 13px; font-weight: 500;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.step-content h4 { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+.step-content p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+
+.lec-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+}
+.lec-header h2 { font-size: 20px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
+.lec-meta { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.ask-btn {
+  display: inline-block;
+  margin-top: 16px;
+  margin-right: 8px;
+  padding: 8px 14px;
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-family: var(--font-sans);
+  cursor: default;
+  user-select: none;
+  opacity: 0.6;
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<p class="page-title">React კურსის სალექციო მასალები</p>
+<p class="page-sub">მოდული 06.1.1.5 · ვებგვერდის ინტერაქტიულობისა და ეფექტების შემუშავება React-ის საშუალებით</p>
+
+<h2 class="sr-only">React კურსის სალექციო მასალები - 6 ლექცია</h2>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showLecture(1)">ლექცია 1</button>
+  <button class="nav-btn" onclick="showLecture(2)">ლექცია 2</button>
+  <button class="nav-btn" onclick="showLecture(3)">ლექცია 3</button>
+  <button class="nav-btn" onclick="showLecture(4)">ლექცია 4</button>
+  <button class="nav-btn" onclick="showLecture(5)">ლექცია 5</button>
+  <button class="nav-btn" onclick="showLecture(6)">ლექცია 6</button>
+</div>
+
+<!-- LECTURE 1 -->
+<div class="lecture active" id="lec-1">
+  <div class="lec-header">
+    <h2>ლექცია 1 — პროექტის შექმნა React-ით</h2>
+    <div class="lec-meta">
+      <span class="badge badge-blue">Vite</span>
+      <span class="badge badge-blue">JSX</span>
+      <span class="badge badge-green">1 კრედიტი</span>
+      <span class="badge badge-warn">პრაქტიკული დავალება</span>
+    </div>
+  </div>
+
+  <div class="section-title">სწავლის მიზნები</div>
+  <div class="card">
+    <ul class="goal-list">
+      <li>დამხმარე პროგრამების ინსტალაცია (Node.js, VS Code)</li>
+      <li>React-ის ინსტალაცია Vite-ის გამოყენებით</li>
+      <li>ჯმნის სამუშაო გარემოს კონფიგურაცია</li>
+      <li>React პროექტის სტრუქტურის გაგება</li>
+    </ul>
+  </div>
+
+  <div class="section-title">ძირითადი ცნებები</div>
+  <div class="two-col">
+    <div class="concept-box">
+      <div class="label">Vite</div>
+      <div class="value">სწრაფი build tool. React პროექტს ქმნის <code>npm create vite@latest</code>-ით. HMR (Hot Module Replacement) ჩაშენებული აქვს.</div>
+    </div>
+    <div class="concept-box">
+      <div class="label">JSX</div>
+      <div class="value">JavaScript-ის გაფართოება. HTML-ის მსგავსი სინტაქსი JS-ში. Babel გარდაქმნის სუფთა JS-ად.</div>
+    </div>
+  </div>
+
+  <div class="section-title">პროექტის შექმნა — ნაბიჯ-ნაბიჯ</div>
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <h4>Node.js-ის ინსტალაცია</h4>
+      <p>nodejs.org-დან ჩამოტვირთე LTS ვერსია. დამოწმება: <code>node -v</code></p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <h4>Vite პროექტის შექმნა</h4>
+      <pre><span class="code-kw">npm</span> create vite@latest my-app -- --template react
+<span class="code-kw">cd</span> my-app
+<span class="code-kw">npm</span> install
+<span class="code-kw">npm</span> run dev</pre>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <h4>პროექტის სტრუქტურა</h4>
+      <pre>my-app/
+├── src/
+│   ├── <span class="code-fn">App.jsx</span>      <span class="code-comment">← მთავარი კომპონენტი</span>
+│   ├── main.jsx     <span class="code-comment">← entry point</span>
+│   └── index.css
+├── public/
+└── index.html</pre>
+    </div>
+  </div>
+
+  <div class="section-title">პირველი JSX კომპონენტი</div>
+  <pre><span class="code-kw">function</span> <span class="code-fn">Welcome</span>() {
+  <span class="code-kw">const</span> name = <span class="code-str">"სტუდენტი"</span>;
+  <span class="code-kw">return</span> (
+    &lt;div className=<span class="code-str">"card"</span>&gt;
+      &lt;h1&gt;გამარჯობა, {name}!&lt;/h1&gt;
+      &lt;p&gt;ეს JSX-ია — HTML + JavaScript ერთად&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+<span class="code-kw">export default</span> Welcome;</pre>
+
+  <div class="section-title">JSX-ის მნიშვნელოვანი წესები</div>
+  <div class="card">
+    <ul class="goal-list">
+      <li><code>class</code>-ის ნაცვლად <code>className</code> გამოიყენება</li>
+      <li>ყველა თეგი უნდა დაიხუროს: <code>&lt;img /&gt;</code>, <code>&lt;br /&gt;</code></li>
+      <li>ერთი root ელემენტი უნდა დაბრუნდეს (ან Fragment: <code>&lt;&gt;...&lt;/&gt;</code>)</li>
+      <li>JS გამოთქმები <code>{ }</code> ფიგურულ ფრჩხილებში</li>
+    </ul>
+  </div>
+
+  <button class="ask-btn">კითხვა JSX-ზე</button>
+  <button class="ask-btn">გავრცელებული შეცდომები</button>
+</div>
+
+<!-- LECTURE 2 -->
+<div class="lecture" id="lec-2">
+  <div class="lec-header">
+    <h2>ლექცია 2 — React Hooks</h2>
+    <div class="lec-meta">
+      <span class="badge badge-blue">useState</span>
+      <span class="badge badge-blue">useEffect</span>
+      <span class="badge badge-blue">useRef</span>
+      <span class="badge badge-blue">useMemo / useCallback</span>
+      <span class="badge badge-green">2 კრედიტი</span>
+    </div>
+  </div>
+
+  <div class="section-title">სწავლის მიზნები</div>
+  <div class="card">
+    <ul class="goal-list">
+      <li>Hooks-ის გამოყენება ფუნქციონალურ კომპონენტებში</li>
+      <li>სასიცოცხლო ციკლის ფუნქციების სამართავად useEffect</li>
+      <li>event Hooks-ის გამოყენება კომპონენტებში</li>
+      <li>აუმჯობესებელი კომპონენტების შექმნა useMemo/useCallback-ით</li>
+    </ul>
+  </div>
+
+  <div class="section-title">useState — მდგომარეობის მართვა</div>
+  <pre><span class="code-kw">import</span> { useState } <span class="code-kw">from</span> <span class="code-str">'react'</span>;
+
+<span class="code-kw">function</span> <span class="code-fn">Counter</span>() {
+  <span class="code-comment">// [მნიშვნელობა, განახლების ფუნქცია] = useState(საწყისი_მნიშვნელობა)</span>
+  <span class="code-kw">const</span> [count, setCount] = useState(0);
+
+  <span class="code-kw">return</span> (
+    &lt;div&gt;
+      &lt;p&gt;რაოდენობა: {count}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;+&lt;/button&gt;
+      &lt;button onClick={() =&gt; setCount(count - 1)}&gt;-&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+
+  <div class="section-title">useEffect — გვერდითი ეფექტები</div>
+  <pre><span class="code-kw">import</span> { useState, useEffect } <span class="code-kw">from</span> <span class="code-str">'react'</span>;
+
+<span class="code-kw">function</span> <span class="code-fn">Timer</span>() {
+  <span class="code-kw">const</span> [time, setTime] = useState(0);
+
+  useEffect(() =&gt; {
+    <span class="code-comment">// კომპონენტის mount-ზე გაეშვება</span>
+    <span class="code-kw">const</span> interval = setInterval(() =&gt; {
+      setTime(t =&gt; t + 1);
+    }, 1000);
+
+    <span class="code-comment">// cleanup — unmount-ზე</span>
+    <span class="code-kw">return</span> () =&gt; clearInterval(interval);
+  }, []); <span class="code-comment">// [] = მხოლოდ ერთხელ, mount-ზე</span>
+
+  <span class="code-kw">return</span> &lt;p&gt;{time} წამი&lt;/p&gt;;
+}</pre>
+
+  <div class="section-title">useEffect-ის dependency array</div>
+  <div class="two-col">
+    <div class="concept-box">
+      <div class="label">useEffect(fn, [])</div>
+      <div class="value">მხოლოდ mount-ზე ერთხელ. componentDidMount-ის ეკვივალენტი.</div>
+    </div>
+    <div class="concept-box">
+      <div class="label">useEffect(fn, [val])</div>
+      <div class="value">ყოველ ჯერ, როცა <code>val</code> შეიცვლება. componentDidUpdate-ის ეკვივალენტი.</div>
+    </div>
+  </div>
+
+  <div class="section-title">useMemo და useCallback — ოპტიმიზაცია</div>
+  <pre><span class="code-comment">// useMemo — ძვირი გამოთვლების ქეშირება</span>
+<span class="code-kw">const</span> result = useMemo(() =&gt; {
+  <span class="code-kw">return</span> heavyCalculation(data);
+}, [data]); <span class="code-comment">// მხოლოდ data-ს ცვლილებაზე გადაითვლება</span>
+
+<span class="code-comment">// useCallback — ფუნქციის მემოიზაცია</span>
+<span class="code-kw">const</span> handleClick = useCallback(() =&gt; {
+  doSomething(id);
+}, [id]); <span class="code-comment">// ახალი ფუნქცია მხოლოდ id-ს ცვლილებაზე</span></pre>
+
+  <button class="ask-btn">Hooks-ის შეცდომები</button>
+</div>
+
+<!-- LECTURE 3 -->
+<div class="lecture" id="lec-3">
+  <div class="lec-header">
+    <h2>ლექცია 3 — კომპონენტების კომპოზიცია და Props</h2>
+    <div class="lec-meta">
+      <span class="badge badge-blue">Props</span>
+      <span class="badge badge-blue">PropTypes</span>
+      <span class="badge badge-blue">Conditional Rendering</span>
+      <span class="badge badge-green">1 კრედიტი</span>
+    </div>
+  </div>
+
+  <div class="section-title">სწავლის მიზნები</div>
+  <div class="card">
+    <ul class="goal-list">
+      <li>React-ის აპლიკაციის კომპონენტების კომპოზიციით შექმნა</li>
+      <li>მონაცემების გადაცემა მშობელსა და შვილ კომპონენტს შორის props-ით</li>
+      <li>კომპონენტების სტრუქტურის props-ის საშუალებით აგება</li>
+      <li>props-ის მართვის ზედა დონის ტექნიკა</li>
+    </ul>
+  </div>
+
+  <div class="section-title">Props — მონაცემთა გადაცემა</div>
+  <pre><span class="code-comment">// მშობელი კომპონენტი</span>
+<span class="code-kw">function</span> <span class="code-fn">App</span>() {
+  <span class="code-kw">return</span> (
+    &lt;div&gt;
+      &lt;<span class="code-fn">Card</span> title=<span class="code-str">"React"</span> desc=<span class="code-str">"UI ბიბლიოთეკა"</span> /&gt;
+      &lt;<span class="code-fn">Card</span> title=<span class="code-str">"Vite"</span> desc=<span class="code-str">"Build Tool"</span> /&gt;
+    &lt;/div&gt;
+  );
+}
+
+<span class="code-comment">// შვილი კომპონენტი</span>
+<span class="code-kw">function</span> <span class="code-fn">Card</span>({ title, desc }) {
+  <span class="code-kw">return</span> (
+    &lt;div className=<span class="code-str">"card"</span>&gt;
+      &lt;h2&gt;{title}&lt;/h2&gt;
+      &lt;p&gt;{desc}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+
+  <div class="section-title">Conditional Rendering</div>
+  <pre><span class="code-kw">function</span> <span class="code-fn">Status</span>({ isLoggedIn, user }) {
+  <span class="code-comment">// მეთოდი 1: ternary operator</span>
+  <span class="code-kw">return</span> isLoggedIn
+    ? &lt;p&gt;გამარჯობა, {user.name}&lt;/p&gt;
+    : &lt;p&gt;გთხოვ შეხვიდე&lt;/p&gt;;
+}
+
+<span class="code-kw">function</span> <span class="code-fn">Notification</span>({ hasNew }) {
+  <span class="code-comment">// მეთოდი 2: &amp;&amp; ოპერატორი</span>
+  <span class="code-kw">return</span> (
+    &lt;div&gt;
+      {hasNew &amp;&amp; &lt;span className=<span class="code-str">"badge"</span>&gt;ახალი!&lt;/span&gt;}
+    &lt;/div&gt;
+  );
+}</pre>
+
+  <div class="section-title">PropTypes — props-ის ვალიდაცია</div>
+  <pre><span class="code-kw">import</span> PropTypes <span class="code-kw">from</span> <span class="code-str">'prop-types'</span>;
+
+<span class="code-kw">function</span> <span class="code-fn">Card</span>({ title, desc, count }) {
+  <span class="code-kw">return</span> &lt;div&gt;{title} — {count}&lt;/div&gt;;
+}
+
+Card.propTypes = {
+  title: PropTypes.string.isRequired,
+  desc:  PropTypes.string,
+  count: PropTypes.number,
+};
+
+Card.defaultProps = {
+  desc:  <span class="code-str">""</span>,
+  count: 0,
+};</pre>
+
+  <div class="section-title">Props drilling-ის ზედა დონის ტექნიკა</div>
+  <div class="card">
+    <ul class="goal-list">
+      <li>props-ის spread: <code>&lt;Child {...props} /&gt;</code></li>
+      <li>children prop: <code>function Card({ children }) { return &lt;div&gt;{children}&lt;/div&gt; }</code></li>
+      <li>ღრმა ხის თავიდან ასაცილებლად — Context API (ლექცია 5)</li>
+    </ul>
+  </div>
+
+  <button class="ask-btn">Props drilling</button>
+</div>
+
+<!-- LECTURE 4 -->
+<div class="lecture" id="lec-4">
+  <div class="lec-header">
+    <h2>ლექცია 4 — SPA და React Router</h2>
+    <div class="lec-meta">
+      <span class="badge badge-blue">react-router-dom</span>
+      <span class="badge badge-blue">useParams</span>
+      <span class="badge badge-blue">useNavigation</span>
+      <span class="badge badge-green">1 კრედიტი</span>
+    </div>
+  </div>
+
+  <div class="section-title">სწავლის მიზნები</div>
+  <div class="card">
+    <ul class="goal-list">
+      <li>react-router-ის ინსტალაცია და კონფიგურაცია</li>
+      <li>მარშრუტების (გვერდის) კომპონენტების შექმნა</li>
+      <li>დინამიური მარშრუტების შექმნა</li>
+      <li>router Hooks-ის გამოყენება ნავიგაციისთვის</li>
+    </ul>
+  </div>
+
+  <div class="section-title">ინსტალაცია და დაყენება</div>
+  <pre><span class="code-kw">npm</span> install react-router-dom</pre>
+
+  <div class="section-title">BrowserRouter — ძირითადი სტრუქტურა</div>
+  <pre><span class="code-kw">import</span> { BrowserRouter, Routes, Route } <span class="code-kw">from</span> <span class="code-str">'react-router-dom'</span>;
+<span class="code-kw">import</span> Home <span class="code-kw">from</span> <span class="code-str">'./pages/Home'</span>;
+<span class="code-kw">import</span> About <span class="code-kw">from</span> <span class="code-str">'./pages/About'</span>;
+<span class="code-kw">import</span> UserPage <span class="code-kw">from</span> <span class="code-str">'./pages/UserPage'</span>;
+
+<span class="code-kw">function</span> <span class="code-fn">App</span>() {
+  <span class="code-kw">return</span> (
+    &lt;<span class="code-fn">BrowserRouter</span>&gt;
+      &lt;<span class="code-fn">Routes</span>&gt;
+        &lt;<span class="code-fn">Route</span> path=<span class="code-str">"/"</span> element={&lt;<span class="code-fn">Home</span> /&gt;} /&gt;
+        &lt;<span class="code-fn">Route</span> path=<span class="code-str">"/about"</span> element={&lt;<span class="code-fn">About</span> /&gt;} /&gt;
+        &lt;<span class="code-fn">Route</span> path=<span class="code-str">"/users/:id"</span> element={&lt;<span class="code-fn">UserPage</span> /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}</pre>
+
+  <div class="section-title">useParams და useNavigate</div>
+  <pre><span class="code-kw">import</span> { useParams, useNavigate } <span class="code-kw">from</span> <span class="code-str">'react-router-dom'</span>;
+
+<span class="code-kw">function</span> <span class="code-fn">UserPage</span>() {
+  <span class="code-kw">const</span> { id } = useParams(); <span class="code-comment">// URL-დან :id-ს წამოღება</span>
+  <span class="code-kw">const</span> navigate = useNavigate();
+
+  <span class="code-kw">return</span> (
+    &lt;div&gt;
+      &lt;h1&gt;მომხმარებელი #{id}&lt;/h1&gt;
+      &lt;button onClick={() =&gt; navigate(<span class="code-str">'/'</span>)}&gt;
+        მთავარ გვერდზე დაბრუნება
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+
+  <div class="section-title">Link — ნავიგაციის ბმული</div>
+  <pre><span class="code-kw">import</span> { Link, NavLink } <span class="code-kw">from</span> <span class="code-str">'react-router-dom'</span>;
+
+<span class="code-kw">function</span> <span class="code-fn">Navbar</span>() {
+  <span class="code-kw">return</span> (
+    &lt;nav&gt;
+      &lt;<span class="code-fn">Link</span> to=<span class="code-str">"/"</span>&gt;მთავარი&lt;/Link&gt;
+      &lt;<span class="code-fn">NavLink</span>
+        to=<span class="code-str">"/about"</span>
+        style={({ isActive }) =&gt; ({ color: isActive ? <span class="code-str">'blue'</span> : <span class="code-str">'black'</span> })}
+      &gt;
+        ჩვენს შესახებ
+      &lt;/NavLink&gt;
+    &lt;/nav&gt;
+  );
+}</pre>
+
+  <button class="ask-btn">Nested Routes</button>
+</div>
+
+<!-- LECTURE 5 -->
+<div class="lecture" id="lec-5">
+  <div class="lec-header">
+    <h2>ლექცია 5 — ინფორმაციის მენეჯმენტი (Redux Toolkit)</h2>
+    <div class="lec-meta">
+      <span class="badge badge-blue">redux-toolkit</span>
+      <span class="badge badge-blue">Provider</span>
+      <span class="badge badge-blue">createSlice</span>
+      <span class="badge badge-green">1.5 კრედიტი</span>
+    </div>
+  </div>
+
+  <div class="section-title">სწავლის მიზნები</div>
+  <div class="card">
+    <ul class="goal-list">
+      <li>Redux-ის გლობალური state-ის კონცეფცია</li>
+      <li>Slice-ების, Actions-ების და Reducer-ების შექმნა</li>
+      <li>Store-ის კომპონენტებთან დაკავშირება Provider-ით</li>
+      <li>მონაცემების წამოღება კომპონენტებიდან useSelector/useDispatch-ით</li>
+    </ul>
+  </div>
+
+  <div class="section-title">ინსტალაცია</div>
+  <pre><span class="code-kw">npm</span> install @reduxjs/toolkit react-redux</pre>
+
+  <div class="section-title">createSlice — State ლოგიკა</div>
+  <pre><span class="code-comment">// features/counterSlice.js</span>
+<span class="code-kw">import</span> { createSlice } <span class="code-kw">from</span> <span class="code-str">'@reduxjs/toolkit'</span>;
+
+<span class="code-kw">const</span> counterSlice = createSlice({
+  name: <span class="code-str">'counter'</span>,
+  initialState: { value: 0 },
+  reducers: {
+    increment: (state) =&gt; { state.value += 1; },
+    decrement: (state) =&gt; { state.value -= 1; },
+    setAmount: (state, action) =&gt; {
+      state.value = action.payload;
+    },
+  },
+});
+
+<span class="code-kw">export const</span> { increment, decrement, setAmount } = counterSlice.actions;
+<span class="code-kw">export default</span> counterSlice.reducer;</pre>
+
+  <div class="section-title">configureStore — Store-ის შექმნა</div>
+  <pre><span class="code-comment">// store/index.js</span>
+<span class="code-kw">import</span> { configureStore } <span class="code-kw">from</span> <span class="code-str">'@reduxjs/toolkit'</span>;
+<span class="code-kw">import</span> counterReducer <span class="code-kw">from</span> <span class="code-str">'../features/counterSlice'</span>;
+
+<span class="code-kw">export const</span> store = configureStore({
+  reducer: {
+    counter: counterReducer,
+  },
+});</pre>
+
+  <div class="section-title">Provider და კომპონენტებში გამოყენება</div>
+  <pre><span class="code-comment">// main.jsx</span>
+<span class="code-kw">import</span> { Provider } <span class="code-kw">from</span> <span class="code-str">'react-redux'</span>;
+<span class="code-kw">import</span> { store } <span class="code-kw">from</span> <span class="code-str">'./store'</span>;
+
+ReactDOM.createRoot(document.getElementById(<span class="code-str">'root'</span>)).render(
+  &lt;<span class="code-fn">Provider</span> store={store}&gt;
+    &lt;<span class="code-fn">App</span> /&gt;
+  &lt;/Provider&gt;
+);
+
+<span class="code-comment">// კომპონენტში</span>
+<span class="code-kw">import</span> { useSelector, useDispatch } <span class="code-kw">from</span> <span class="code-str">'react-redux'</span>;
+<span class="code-kw">import</span> { increment } <span class="code-kw">from</span> <span class="code-str">'./counterSlice'</span>;
+
+<span class="code-kw">function</span> <span class="code-fn">CounterDisplay</span>() {
+  <span class="code-kw">const</span> count = useSelector((state) =&gt; state.counter.value);
+  <span class="code-kw">const</span> dispatch = useDispatch();
+
+  <span class="code-kw">return</span> &lt;button onClick={() =&gt; dispatch(increment())}&gt;{count}&lt;/button&gt;;
+}</pre>
+
+  <button class="ask-btn">Async Thunk</button>
+</div>
+
+<!-- LECTURE 6 -->
+<div class="lecture" id="lec-6">
+  <div class="lec-header">
+    <h2>ლექცია 6 — ფორმის კონტროლი (Formik + Yup)</h2>
+    <div class="lec-meta">
+      <span class="badge badge-blue">Formik</span>
+      <span class="badge badge-blue">Yup</span>
+      <span class="badge badge-blue">useFormik</span>
+      <span class="badge badge-green">1.5 კრედიტი</span>
+    </div>
+  </div>
+
+  <div class="section-title">სწავლის მიზნები</div>
+  <div class="card">
+    <ul class="goal-list">
+      <li>Formik-ის ინსტალაცია და კონფიგურაცია</li>
+      <li>ვალიდაციის სქემის შექმნა Yup-ით</li>
+      <li>ფორმის ვალიდაციის სტემბა</li>
+      <li>useFormik Hook-ის გამოყენება</li>
+      <li>ფორმის ელემენტებთან მიბმა და მონაცემების ამოღება</li>
+    </ul>
+  </div>
+
+  <div class="section-title">ინსტალაცია</div>
+  <pre><span class="code-kw">npm</span> install formik yup</pre>
+
+  <div class="section-title">Yup — ვალიდაციის სქემა</div>
+  <pre><span class="code-kw">import</span> * <span class="code-kw">as</span> Yup <span class="code-kw">from</span> <span class="code-str">'yup'</span>;
+
+<span class="code-kw">const</span> validationSchema = Yup.object({
+  name: Yup.string()
+    .required(<span class="code-str">'სახელი სავალდებულოა'</span>)
+    .min(2, <span class="code-str">'მინ. 2 სიმბოლო'</span>),
+
+  email: Yup.string()
+    .email(<span class="code-str">'ელ-ფოსტა არასწორია'</span>)
+    .required(<span class="code-str">'ელ-ფოსტა სავალდებულოა'</span>),
+
+  age: Yup.number()
+    .min(18, <span class="code-str">'18 წლიდან'</span>)
+    .max(100, <span class="code-str">'მაქს. 100'</span>)
+    .required(<span class="code-str">'ასაკი სავალდებულოა'</span>),
+});</pre>
+
+  <div class="section-title">useFormik Hook</div>
+  <pre><span class="code-kw">import</span> { useFormik } <span class="code-kw">from</span> <span class="code-str">'formik'</span>;
+
+<span class="code-kw">function</span> <span class="code-fn">RegisterForm</span>() {
+  <span class="code-kw">const</span> formik = useFormik({
+    initialValues: { name: <span class="code-str">''</span>, email: <span class="code-str">''</span>, age: <span class="code-str">''</span> },
+    validationSchema,
+    onSubmit: (values) =&gt; {
+      console.log(<span class="code-str">'გაგზავნა:'</span>, values);
+    },
+  });
+
+  <span class="code-kw">return</span> (
+    &lt;div onSubmit={formik.handleSubmit}&gt;
+      &lt;input
+        name=<span class="code-str">"name"</span>
+        value={formik.values.name}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      /&gt;
+      {formik.touched.name &amp;&amp; formik.errors.name &amp;&amp; (
+        &lt;span className=<span class="code-str">"error"</span>&gt;{formik.errors.name}&lt;/span&gt;
+      )}
+      &lt;button type=<span class="code-str">"submit"</span>&gt;რეგისტრაცია&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+
+  <div class="section-title">Yup-ის მეთოდები</div>
+  <div class="two-col">
+    <div class="concept-box">
+      <div class="label">string() მეთოდები</div>
+      <div class="value"><code>required(msg)</code>, <code>min(n, msg)</code>, <code>max(n, msg)</code>, <code>email(msg)</code>, <code>url(msg)</code>, <code>matches(regex, msg)</code></div>
+    </div>
+    <div class="concept-box">
+      <div class="label">number() მეთოდები</div>
+      <div class="value"><code>required(msg)</code>, <code>min(n, msg)</code>, <code>max(n, msg)</code>, <code>integer(msg)</code>, <code>positive(msg)</code></div>
+    </div>
+  </div>
+
+  <button class="ask-btn">Custom Validation</button>
+</div>
+
+</div><!-- /wrapper -->
+
+<script>
+function showLecture(n) {
+  document.querySelectorAll('.lecture').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('lec-' + n).classList.add('active');
+  document.querySelectorAll('.nav-btn')[n - 1].classList.add('active');
+}
+</script>
+</body>
+</html>
